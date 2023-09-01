@@ -17,17 +17,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Ensure docs dir exists
-        run: mkdir -p docs
+        run: mkdir -p build/docs
       - name: Marp Build (HTML)
         uses: docker://marpteam/marp-cli:v3.2.0
         with:
-          args: README.md -o docs/index.html
+          args: README.md -o build/docs/index.html
         env:
           MARP_USER: root:root
       - name: Marp Build (README.pdf)
         uses: docker://marpteam/marp-cli:v3.2.0
         with:
-          args: README.md --allow-local-files --pdf -o docs/k6-oh-99.pdf
+          args: README.md --allow-local-files --pdf -o build/docs/k6-oh-99.pdf
         env:
           MARP_USER: root:root
       - name: Setup Pages
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: "docs"
+          path: "build/docs"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
