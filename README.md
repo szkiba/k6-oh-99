@@ -33,6 +33,7 @@ https://github.com/szkiba/k6-oh-99
 - https://github.com/szkiba/xk6-enhanced
 - https://github.com/szkiba/xk6-g0
 - https://github.com/szkiba/xk6-top
+- https://github.com/szkiba/xk6-output-plugin
 
 ---
 
@@ -165,3 +166,76 @@ k6 run script.go
 go test .
 ```
 
+---
+
+#### xk6-top
+
+> Updating k6 metrics summaries in the terminal.
+
+- "live" summary view
+- for terminal lovers
+
+```bash
+k6 run --out top examples/xk6-top/script.js
+```
+
+---
+
+#### xk6-output-plugin 
+
+> Write k6 output extension using your favorite programming language
+
+- JavaScript (Node.js), Python, Go
+
+```bash
+# prepare python demo
+cd examples/xk6-output-plugin
+pip install virtualenv
+virtualenv env
+source env/bin/activate
+pip install xk6-output-plugin-py
+# run python demo
+k6 run --out plugin=./example.py script.js
+```
+
+---
+
+###### xk6-output-plugin-example.py
+
+```python
+import datetime
+import logging
+
+from xk6_output_plugin_py.output import serve, Output, Info, MetricType, ValueType
+
+class Example(Output):
+    def Init(self, params):
+        logging.info("init")
+        return Info(description="example-py plugin")
+
+    def Start(self):
+        logging.info("start")
+
+    def Stop(self):
+        logging.info("stop")
+
+    def AddMetrics(self, metrics):
+        logging.info("metrics")
+        for metric in metrics:
+            logging.info(metric.name,
+                extra={"metric.type": MetricType.Name(metric.type),"metric.contains": ValueType.Name(metric.contains)})
+
+    def AddSamples(self, samples):
+        logging.info("samples")
+
+        for sample in samples:
+            t = datetime.datetime.fromtimestamp(sample.time / 1000.0, tz=datetime.timezone.utc)
+            logging.info(sample.metric,extra={"sample.time": t, "sample.value": sample.value})
+
+if __name__ == "__main__":
+    serve(Example())
+```
+
+---
+
+## That's All Folks!
