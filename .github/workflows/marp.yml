@@ -12,7 +12,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,15 +28,9 @@ jobs:
       - name: Marp Build (README.pdf)
         uses: docker://marpteam/marp-cli:v3.2.0
         with:
-          args: README.md --allow-local-files -o README.pdf
+          args: README.md --allow-local-files --pdf -o docs/k6-oh-99.pdf
         env:
           MARP_USER: root:root
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
