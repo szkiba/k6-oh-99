@@ -14,7 +14,7 @@ Iván Szkiba
 ## Bundled Extensions
 
 ```xk6
-github.com/graphana/xk6-dashboard
+github.com/grafana/xk6-dashboard
 github.com/szkiba/xk6-faker
 github.com/szkiba/xk6-enhanced
 github.com/szkiba/xk6-top
